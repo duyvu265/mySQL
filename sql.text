@@ -1,0 +1,51 @@
+CREATE TABLE IF NOT EXISTS `store`.`qly_khach_hang` (
+  `Ma_khach_hang` INT NOT NULL,
+  `ten` VARCHAR(45) NOT NULL,
+  `tuoi` INT NOT NULL,
+  `dia_chi` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Ma_khach_hang`))
+
+  CREATE TABLE IF NOT EXISTS `store`.`qly_loai_san_pham` (
+    `id_loai_san_pham` INT NOT NULL,
+    `loai_san_pham` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`id_loai_san_pham`))
+
+CREATE TABLE IF NOT EXISTS `store`.`qly_sanpham` (
+  `Ma_sanpham` INT NOT NULL AUTO_INCREMENT,
+  `Ten_san_pham` VARCHAR(55) NOT NULL,
+  `Gia_san_pham` FLOAT NOT NULL,
+  `So_luongSP` INT NOT NULL,
+  `Loai_sp` INT NOT NULL,
+  PRIMARY KEY (`Ma_sanpham`),
+  UNIQUE INDEX `Loai_sp_UNIQUE` (`Loai_sp` ASC) VISIBLE,
+  CONSTRAINT `Loai_sp`
+    FOREIGN KEY (`Loai_sp`)
+    REFERENCES `store`.`qly_loai_san_pham` (`id_loai_san_pham`))
+
+CREATE TABLE IF NOT EXISTS `store`.`qly_tt_hoa_don` (
+  `Ma_hoa_don` INT NOT NULL,
+  `Thoi_gian_tao_hd` DATETIME NOT NULL,
+  `Tt_sp` VARCHAR(45) NOT NULL,
+  `Tt_khach_hang` INT NOT NULL,
+  `So_tien` FLOAT NOT NULL,
+  PRIMARY KEY (`Ma_hoa_don`),
+  UNIQUE INDEX `Ma_hoa_don_UNIQUE` (`Ma_hoa_don` ASC) VISIBLE,
+  UNIQUE INDEX `Tt_khach_hang_UNIQUE` (`Tt_khach_hang` ASC) VISIBLE,
+  CONSTRAINT `Tt_khach_hang`
+    FOREIGN KEY (`Tt_khach_hang`)
+    REFERENCES `store`.`qly_khach_hang` (`Ma_khach_hang`))
+
+CREATE TABLE IF NOT EXISTS `store`.`qly_so_luong_hang` (
+  `So_luong_mua` INT NOT NULL,
+  `Id_sp` INT NOT NULL,
+  `id_hoa_don` INT NOT NULL,
+  `gia_sp_td_ban` FLOAT NOT NULL,
+  PRIMARY KEY (`So_luong_mua`),
+  UNIQUE INDEX `Id_sp_UNIQUE` (`Id_sp` ASC) VISIBLE,
+  UNIQUE INDEX `id_hoa_don_UNIQUE` (`id_hoa_don` ASC) VISIBLE,
+  CONSTRAINT `id_hoa_don`
+    FOREIGN KEY (`id_hoa_don`)
+    REFERENCES `store`.`qly_tt_hoa_don` (`Ma_hoa_don`),
+  CONSTRAINT `Id_sp`
+    FOREIGN KEY (`Id_sp`)
+    REFERENCES `store`.`qly_sanpham` (`Ma_sanpham`))
